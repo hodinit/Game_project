@@ -5,7 +5,7 @@ import math
 class TicTacToe:
     def __init__(self, root, size):
         self.root = root
-        self.size = size  # Board size (e.g., 3 for 3x3)
+        self.size = size
         self.board = []
         for i in range(size):
             row = []
@@ -33,11 +33,11 @@ class TicTacToe:
             self.buttons.append(button_row)
 
     def on_click(self, row, col):
-        if self.board[row][col] is None and self.current_player == "X":  # Human's turn
+        if self.board[row][col] is None and self.current_player == "X":
             self.board[row][col] = self.current_player
             self.buttons[row][col].config(text=self.current_player)
 
-            if self.check_winner(row, col):
+            if self.check_winner(self.current_player):
                 messagebox.showinfo("Game Over", f"Player {self.current_player} wins!")
                 self.root.destroy()
             elif self.check_tie():
@@ -66,7 +66,7 @@ class TicTacToe:
             self.board[row][col] = "O"
             self.buttons[row][col].config(text="O")
 
-            if self.check_winner(row, col):
+            if self.check_winner("O"):
                 messagebox.showinfo("Game Over", "AI wins!")
                 self.root.destroy()
             elif self.check_tie():
@@ -76,9 +76,11 @@ class TicTacToe:
                 self.current_player = "X"
 
     def minimax(self, depth, is_maximizing, alpha, beta):
-        if self.check_winner_state("O"):
+        if depth > 6: # explain
+            return 0
+        if self.check_winner("O"):
             return 10 - depth
-        elif self.check_winner_state("X"):
+        elif self.check_winner("X"):
             return depth - 10
         elif self.check_tie():
             return 0
@@ -110,20 +112,43 @@ class TicTacToe:
                             break
             return min_eval
 
-    def check_winner(self, row, col):
-        return self.check_winner_state(self.current_player)
+    def check_winner(self, player):
+        for row in range(self.size):
+            count = 0
+            for col in range(self.size):
+                if self.board[row][col] == player:
+                    count += 1
+                else:
+                    break
+            if count == self.size:
+                return True
 
-    def check_winner_state(self, player):
-        # Check rows, columns, and diagonals for a win
+        for col in range(self.size):
+            count = 0
+            for row in range(self.size):
+                if self.board[row][col] == player:
+                    count += 1
+                else:
+                    break
+            if count == self.size:
+                return True
+
+        count = 0
         for i in range(self.size):
-            if all(self.board[i][j] == player for j in range(self.size)):
-                return True
-            if all(self.board[j][i] == player for j in range(self.size)):
-                return True
-
-        if all(self.board[i][i] == player for i in range(self.size)):
+            if self.board[i][i] == player:
+                count += 1
+            else:
+                break
+        if count == self.size:
             return True
-        if all(self.board[i][self.size - 1 - i] == player for i in range(self.size)):
+
+        count = 0
+        for i in range(self.size):
+            if self.board[i][self.size - 1 - i] == player:
+                count += 1
+            else:
+                break
+        if count == self.size:
             return True
 
         return False
@@ -137,8 +162,7 @@ class TicTacToe:
 
 root = tk.Tk()
 
-# Set the board size here
-board_size = 3
+board_size = 4
 
 game = TicTacToe(root, board_size)
 root.mainloop()
