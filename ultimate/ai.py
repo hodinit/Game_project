@@ -1,6 +1,6 @@
 import math
 
-class AIPlayer:
+class AI:
     def __init__(self, game):
         self.game = game
 
@@ -22,14 +22,14 @@ class AIPlayer:
         return best_move
 
     def minimax(self, depth, is_maximizing, alpha, beta):
-        if depth > 6:
+        if depth>6:
             return 0
 
         if self.game.check_winner(self.game.ai_symbol):
-            return 10 - depth
+            return 10-depth
 
         if self.game.check_winner(self.game.player_symbol):
-            return depth - 10
+            return depth-10
 
         if self.game.check_tie():
             return 0
@@ -40,7 +40,7 @@ class AIPlayer:
                 for col in range(self.game.size):
                     if self.game.board[row][col] == " ":
                         self.game.board[row][col] = self.game.ai_symbol
-                        eval = self.minimax(depth + 1, False, alpha, beta)
+                        eval = self.minimax(depth+1, False, alpha, beta)
                         self.game.board[row][col] = " "
                         max_eval = max(max_eval, eval)
                         alpha = max(alpha, eval)
@@ -53,7 +53,7 @@ class AIPlayer:
                 for col in range(self.game.size):
                     if self.game.board[row][col] == " ":
                         self.game.board[row][col] = self.game.player_symbol
-                        eval = self.minimax(depth + 1, True, alpha, beta)
+                        eval = self.minimax(depth+1, True, alpha, beta)
                         self.game.board[row][col] = " "
                         min_eval = min(min_eval, eval)
                         beta = min(beta, eval)

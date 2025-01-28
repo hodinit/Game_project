@@ -1,6 +1,6 @@
 import tkinter as tk
 from game_logic import TicTacToe
-from ai import AIPlayer
+from ai import AI
 from interface import GUI
 
 if __name__ == "__main__":
@@ -10,6 +10,6 @@ if __name__ == "__main__":
     ai_symbol = "O"
 
     game = TicTacToe(board_size, player_symbol, ai_symbol)
-    ai_player = AIPlayer(game)
+    ai_player = AI(game)
     app = GUI(root, game, ai_player)
     root.mainloop()
