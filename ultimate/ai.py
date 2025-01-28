@@ -24,13 +24,10 @@ class AI:
     def minimax(self, depth, is_maximizing, alpha, beta):
         if depth>6:
             return 0
-
         if self.game.check_winner(self.game.ai_symbol):
             return 10-depth
-
         if self.game.check_winner(self.game.player_symbol):
             return depth-10
-
         if self.game.check_tie():
             return 0
 
