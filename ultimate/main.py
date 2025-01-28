@@ -1,7 +1,7 @@
 import tkinter as tk
-from game_logic import TicTacToeGame
+from game_logic import TicTacToe
 from ai import AIPlayer
-from ui import TicTacToeUI
+from interface import GUI
 
 if __name__ == "__main__":
     root = tk.Tk()
@@ -9,7 +9,7 @@ if __name__ == "__main__":
     player_symbol = "X"
     ai_symbol = "O"
 
-    game = TicTacToeGame(board_size, player_symbol, ai_symbol)
+    game = TicTacToe(board_size, player_symbol, ai_symbol)
     ai_player = AIPlayer(game)
-    app = TicTacToeUI(root, game, ai_player)
+    app = GUI(root, game, ai_player)
     root.mainloop()

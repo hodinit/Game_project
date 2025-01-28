@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import messagebox
 import time
 
-class TicTacToeUI:
+class GUI:
     def __init__(self, root, game, ai_player):
         self.root = root
         self.game = game
@@ -31,10 +31,10 @@ class TicTacToeUI:
                 self.buttons[row][col].config(text=self.game.player_symbol)
 
                 if self.game.check_winner(self.game.player_symbol):
-                    messagebox.showinfo("Game Over", "You Win!")
+                    messagebox.showinfo('tk', "Win")
                     self.root.destroy()
                 elif self.game.check_tie():
-                    messagebox.showinfo("Game Over", "It's a Tie!")
+                    messagebox.showinfo('tk', "Tiee")
                     self.root.destroy()
                 else:
                     self.game.current_player = self.game.ai_symbol
@@ -50,12 +50,12 @@ class TicTacToeUI:
             self.buttons[row][col].config(text=self.game.ai_symbol)
 
             if self.game.check_winner(self.game.ai_symbol):
-                messagebox.showinfo("Game Over", "You Lose!")
+                messagebox.showinfo('tk',"Lose")
                 self.root.destroy()
             elif self.game.check_tie():
-                messagebox.showinfo("Game Over", "It's a Tie!")
+                messagebox.showinfo('tk',"Tie")
                 self.root.destroy()
             else:
                 self.game.current_player = self.game.player_symbol
 
-        print("AI move time:", time.time() - start)
+        print("AI's time to move: ", time.time() - start)

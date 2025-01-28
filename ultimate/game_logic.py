@@ -1,4 +1,4 @@
-class TicTacToeGame:
+class TicTacToe:
     def __init__(self, size, player_symbol, ai_symbol):
         self.size = size
         self.board=[]
@@ -12,9 +12,9 @@ class TicTacToeGame:
         self.ai_symbol = ai_symbol
         self.current_player = player_symbol
 
-    def make_move(self, row, col, symbol):
+    def make_move(self, row, col, current_player):
         if self.board[row][col] == " ":
-            self.board[row][col] = symbol
+            self.board[row][col] = current_player
             return True
         return False
 

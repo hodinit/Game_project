@@ -4,7 +4,7 @@ class AIPlayer:
     def __init__(self, game):
         self.game = game
 
-    def find_best_move(self, depth_limit=6):
+    def find_best_move(self):
         best_score = -math.inf
         best_move = None
 
@@ -12,7 +12,7 @@ class AIPlayer:
             for col in range(self.game.size):
                 if self.game.board[row][col] == " ":
                     self.game.board[row][col] = self.game.ai_symbol
-                    score = self.minimax(0, False, -math.inf, math.inf, depth_limit)
+                    score = self.minimax(0, False, -math.inf, math.inf)
                     self.game.board[row][col] = " "
 
                     if score > best_score:
@@ -21,8 +21,8 @@ class AIPlayer:
 
         return best_move
 
-    def minimax(self, depth, is_maximizing, alpha, beta, depth_limit):
-        if depth > depth_limit:
+    def minimax(self, depth, is_maximizing, alpha, beta):
+        if depth > 6:
             return 0
 
         if self.game.check_winner(self.game.ai_symbol):
@@ -40,7 +40,7 @@ class AIPlayer:
                 for col in range(self.game.size):
                     if self.game.board[row][col] == " ":
                         self.game.board[row][col] = self.game.ai_symbol
-                        eval = self.minimax(depth + 1, False, alpha, beta, depth_limit)
+                        eval = self.minimax(depth + 1, False, alpha, beta)
                         self.game.board[row][col] = " "
                         max_eval = max(max_eval, eval)
                         alpha = max(alpha, eval)
@@ -53,7 +53,7 @@ class AIPlayer:
                 for col in range(self.game.size):
                     if self.game.board[row][col] == " ":
                         self.game.board[row][col] = self.game.player_symbol
-                        eval = self.minimax(depth + 1, True, alpha, beta, depth_limit)
+                        eval = self.minimax(depth + 1, True, alpha, beta)
                         self.game.board[row][col] = " "
                         min_eval = min(min_eval, eval)
                         beta = min(beta, eval)
