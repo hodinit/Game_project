@@ -6,7 +6,7 @@ class AI:
 
     def find_best_move(self):
         best_score = -math.inf
-        best_move = None
+        best_move = " "
 
         for row in range(self.game.size):
             for col in range(self.game.size):

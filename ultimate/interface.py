@@ -44,7 +44,7 @@ class GUI:
         start = time.time()
         move = self.ai_player.find_best_move()
 
-        if move:
+        if move != " ":
             row, col = move
             self.game.make_move(row, col, self.game.ai_symbol)
             self.buttons[row][col].config(text=self.game.ai_symbol)
