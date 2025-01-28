@@ -4,7 +4,7 @@ import math
 import time
 
 class TicTacToe:
-    def __init__(self, root, size):
+    def __init__(self, root, size, player, ai):
         self.root=root
         self.size=size
         self.board=[]
@@ -14,10 +14,10 @@ class TicTacToe:
                 row.append(" ")
             self.board.append(row)
 
-        self.current_player ="X"
-        self.create_widgets()
+        self.current_player = player
+        self.create_widgets(player, ai)
 
-    def create_widgets(self):
+    def create_widgets(self, player, ai):
         self.buttons =[]
 
         for row in range(self.size):
@@ -27,28 +27,28 @@ class TicTacToe:
                     self.root,
                     height=5,
                     width=10,
-                    command=lambda r=row, c=col: self.on_click(r, c)
+                    command=lambda r=row, c=col: self.on_click(r, c, player, ai)
                 )
                 button.grid(row=row, column=col)
                 button_row.append(button)
             self.buttons.append(button_row)
 
-    def on_click(self, row, col):
-        if self.board[row][col] == " " and self.current_player == "X":
+    def on_click(self, row, col, player, ai):
+        if self.board[row][col] == " " and self.current_player == player:
             self.board[row][col]=self.current_player
             self.buttons[row][col].config(text=self.current_player)
 
             if self.check_winner(self.current_player):
-                messagebox.showinfo("tk", "Ai castigat")
+                messagebox.showinfo("tk","Ai castigat")
                 self.root.destroy()
             elif self.check_tie():
-                messagebox.showinfo("tk", "Egalitate")
+                messagebox.showinfo("tk","Egalitate")
                 self.root.destroy()
             else:
-                self.current_player="O"
-                self.ai_move()
+                self.current_player= ai
+                self.ai_move(player, ai)
 
-    def ai_move(self):
+    def ai_move(self, player, ai):
         start=time.time()
 
         best_score = -math.inf
@@ -57,8 +57,8 @@ class TicTacToe:
         for row in range(self.size):
             for col in range(self.size):
                 if self.board[row][col] == " ":
-                    self.board[row][col] = "O"
-                    score = self.minimax(0, False, -math.inf, math.inf)
+                    self.board[row][col] = ai
+                    score = self.minimax(0, False, -math.inf, math.inf, player, ai)
                     self.board[row][col] = " "
                     if score > best_score:
                         best_score =score
@@ -66,26 +66,26 @@ class TicTacToe:
 
         if best_move:
             row, col = best_move
-            self.board[row][col] ="O"
-            self.buttons[row][col].config(text="O")
+            self.board[row][col] = ai
+            self.buttons[row][col].config(text=ai)
 
-            if self.check_winner("O"):
+            if self.check_winner(ai):
                 messagebox.showinfo("tk","Ai pierdut")
                 self.root.destroy()
             elif self.check_tie():
                 messagebox.showinfo("tk","Egalitate")
                 self.root.destroy()
             else:
-                self.current_player ="X"
+                self.current_player = player
 
         print("Timp necesar AI pentru mutare: ", time.time()-start)
 
-    def minimax(self, depth, is_maximizing, alpha, beta):
+    def minimax(self, depth, is_maximizing, alpha, beta, player, ai):
         if depth>6: # explain
             return 0
-        if self.check_winner("O"):
+        if self.check_winner(ai):
             return 10-depth
-        elif self.check_winner("X"):
+        elif self.check_winner(player):
             return depth-10
         elif self.check_tie():
             return 0
@@ -95,8 +95,8 @@ class TicTacToe:
             for row in range(self.size):
                 for col in range(self.size):
                     if self.board[row][col] ==" ":
-                        self.board[row][col] ="O"
-                        eval=self.minimax(depth + 1, False, alpha, beta)
+                        self.board[row][col] =ai
+                        eval=self.minimax(depth + 1, False, alpha, beta, player, ai)
                         self.board[row][col] =" "
                         max_eval=max(max_eval, eval)
                         alpha=max(alpha, eval)
@@ -108,8 +108,8 @@ class TicTacToe:
             for row in range(self.size):
                 for col in range(self.size):
                     if self.board[row][col] ==" ":
-                        self.board[row][col] ="X"
-                        eval=self.minimax(depth + 1, True, alpha, beta)
+                        self.board[row][col] =player
+                        eval=self.minimax(depth + 1, True, alpha, beta, player, ai)
                         self.board[row][col] =" "
                         min_eval=min(min_eval, eval)
                         beta=min(beta, eval)
@@ -117,11 +117,11 @@ class TicTacToe:
                             break
             return min_eval
 
-    def check_winner(self, player):
+    def check_winner(self, current_player):
         for row in range(self.size):
             count=0
             for col in range(self.size):
-                if self.board[row][col] == player:
+                if self.board[row][col] == current_player:
                     count+=1
                 else:
                     break
@@ -131,7 +131,7 @@ class TicTacToe:
         for col in range(self.size):
             count=0
             for row in range(self.size):
-                if self.board[row][col] == player:
+                if self.board[row][col] == current_player:
                     count+=1
                 else:
                     break
@@ -140,7 +140,7 @@ class TicTacToe:
 
         count=0
         for i in range(self.size):
-            if self.board[i][i] == player:
+            if self.board[i][i] == current_player:
                 count+=1
             else:
                 break
@@ -149,7 +149,7 @@ class TicTacToe:
 
         count=0
         for i in range(self.size):
-            if self.board[i][self.size-1-i] == player:
+            if self.board[i][self.size-1-i] == current_player:
                 count+=1
             else:
                 break
@@ -169,6 +169,8 @@ class TicTacToe:
 root = tk.Tk()
 
 board_size = 4
+player_symbol = "X"
+ai_symbol = "O"
 
-game = TicTacToe(root, board_size)
+game = TicTacToe(root, board_size, player_symbol, ai_symbol)
 root.mainloop()
