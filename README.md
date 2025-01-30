@@ -5,4 +5,9 @@ Proiectul acesta este un joc de Tic Tac Toe (sau X si 0) singleplayer care este 
 Principalul algoritm utilizat este minimax, responsabil de mutarile AI-ului. Pe langa acesta sunt utilizate o combinatie de clase si metode pentru a realiza jocul.<br><br>
 In `game_logic.py` este initializata tabla si sunt definite metodele pentru regulile jocului. <br>
 In `ai.py` este utilizat un algoritm minimax printr-o functie ce se apeleaza recursiv si care evaluaza diferite scenarii si face miscarea optima. Este utilizata si o optimizare de tip alpha-beta care ajuta la imbunatatirea performantei. Aceasta functioneaza prin neparcurgerea unor noduri/scenarii in cazul in care exista deja o varianta mai buna din punct de vedere al scorului. Aceasta functioneaza datorita presupunerii ca AI-ul joaca pentru a castiga. <br>
-In `interface.py` este creata interfata si verificarile pentru castig sunt apelate.
+In `interface.py` este creata interfata si verificarile pentru castig sunt apelate.<br>
+In `main.py` sunt gestionate toate clasele.
+## Rezultate teste
+Un artificiu implementat a fost `if depth>6: return 0` in `ai.py` care limiteaza adancimea la care minimax cauta mutarea perfecta. Daca cresc aceasta verificare, creste automat si timpul de computatie pentru AI entru a muta. Am implementat niste time stamps in `interface.py` pentru a vedea cat timp dureaza. Spre exemplu, pentru o tabla de 4 x 4 cu depth>6 ii ia aproximativ 3.6 secunde la AI sa faca prima mutare, iar pe o tabla de aceeasi dimensiune cu depth>7 ii ia aproximativ 15.3 secunde. Pe masura ce jocul avanseaza, timpul de gandire al AI-ului scade pentru ca pozitiile disponibile scad. De asemenea, daca scoatem optimizarea alpha beta pe un depth>5 si tabla de 4 x 4 pentru prima mutare AI-ul are nevoie de aproximativ 28.6 secnde.
+## Instructiuni pentru rulare
+Pentru a executa codul, se ruleaza fisierul `main.py` si in interfata aparuta se apasa butoanele pozitiei pe care vrei sa o joci. Pentru setari legate de joc, in `main.py` se pot seta dimensiunile tablei, si simbolurile jucatorului si al AI-ului.  
