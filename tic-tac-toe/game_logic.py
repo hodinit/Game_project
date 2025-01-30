@@ -70,6 +70,7 @@ class TicTacToe:
         # si ia un count care creste daca gaseste simbolul jucatorului curent si e egal cu dimensiunea returneaza True
 
         return False # returneaza False daca nu a gasit niciun castigator
+    # per total, este o metoda care verifica daca jucatorul curent a castigat pe linii, coloane sau diagonale
 
     def check_tie(self):
         for i in range(self.size):
@@ -77,4 +78,6 @@ class TicTacToe:
                 if self.board[i][j] == " ":
                     return False
         return True
-    # metoda care verifica daca mai sunt spatii goale pe tabla si daca nu returneaza True
+    # metoda care verifica daca mai sunt spatii goale pe tabla si daca nu returneaza True.
+    # aceasta metoda este apelata dupa apelarea check_winner,, 
+    # motiv pentru care este suficienta aceasta verificare pentru a afla daca jocul s-a terminat cu remiza
